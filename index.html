@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <style>
+        #map {
+            width: 1138px;
+            height: 532px;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="data/Unidades_Emater_Prod_animal_novo_1.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[-16.078515503406994,-48.451671038523074],[-15.472926635179494,-47.14014878323829]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_GoogleSatellite_0');
+        map.getPane('pane_GoogleSatellite_0').style.zIndex = 400;
+        var layer_GoogleSatellite_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleSatellite_0',
+            opacity: 1.0,
+            attribution: '<a href="https://www.google.at/permissions/geoguidelines/attr-guide.html">Map data ©2015 Google</a>',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 20
+        });
+        layer_GoogleSatellite_0;
+        map.addLayer(layer_GoogleSatellite_0);
+        function pop_Unidades_Emater_Prod_animal_novo_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['AREA_HA'] !== null ? autolinker.link(feature.properties['AREA_HA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>UL</strong><br />' + (feature.properties['UL'] !== null ? autolinker.link(feature.properties['UL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CODORN_CAB'] !== null ? autolinker.link(feature.properties['CODORN_CAB'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">CODORNA_KG</th>\
+                        <td>' + (feature.properties['CODORNA_KG'] !== null ? autolinker.link(feature.properties['CODORNA_KG'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CODORNA_DZ'] !== null ? autolinker.link(feature.properties['CODORNA_DZ'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['BUFALO_CAB'] !== null ? autolinker.link(feature.properties['BUFALO_CAB'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BUFALO_KG_</th>\
+                        <td>' + (feature.properties['BUFALO_KG_'] !== null ? autolinker.link(feature.properties['BUFALO_KG_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BUFALO_L</th>\
+                        <td>' + (feature.properties['BUFALO_L'] !== null ? autolinker.link(feature.properties['BUFALO_L'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['OVINOS_CAB'] !== null ? autolinker.link(feature.properties['OVINOS_CAB'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">OVINOS_KG_</th>\
+                        <td>' + (feature.properties['OVINOS_KG_'] !== null ? autolinker.link(feature.properties['OVINOS_KG_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['OVINOS_L_'] !== null ? autolinker.link(feature.properties['OVINOS_L_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SUINOS_CAB'] !== null ? autolinker.link(feature.properties['SUINOS_CAB'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">SUINOS_KG</th>\
+                        <td>' + (feature.properties['SUINOS_KG'] !== null ? autolinker.link(feature.properties['SUINOS_KG'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['BOVINO__CA'] !== null ? autolinker.link(feature.properties['BOVINO__CA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BOVINO__KG</th>\
+                        <td>' + (feature.properties['BOVINO__KG'] !== null ? autolinker.link(feature.properties['BOVINO__KG'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['BOVINO_L'] !== null ? autolinker.link(feature.properties['BOVINO_L'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CAPRINO_CA'] !== null ? autolinker.link(feature.properties['CAPRINO_CA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">CAPRINO_KG</th>\
+                        <td>' + (feature.properties['CAPRINO_KG'] !== null ? autolinker.link(feature.properties['CAPRINO_KG'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CAPRINO__L'] !== null ? autolinker.link(feature.properties['CAPRINO__L'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['GALINHA_CA'] !== null ? autolinker.link(feature.properties['GALINHA_CA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">GALINHA_KG</th>\
+                        <td>' + (feature.properties['GALINHA_KG'] !== null ? autolinker.link(feature.properties['GALINHA_KG'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['GALINHA_DZ'] !== null ? autolinker.link(feature.properties['GALINHA_DZ'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['COELHO_CAB'] !== null ? autolinker.link(feature.properties['COELHO_CAB'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">COELHO_KG_</th>\
+                        <td>' + (feature.properties['COELHO_KG_'] !== null ? autolinker.link(feature.properties['COELHO_KG_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PESCADO_KG</th>\
+                        <td>' + (feature.properties['PESCADO_KG'] !== null ? autolinker.link(feature.properties['PESCADO_KG'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PESCADO_HA'] !== null ? autolinker.link(feature.properties['PESCADO_HA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['COLMEIA_UN'] !== null ? autolinker.link(feature.properties['COLMEIA_UN'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">MEL__KG_</th>\
+                        <td>' + (feature.properties['MEL__KG_'] !== null ? autolinker.link(feature.properties['MEL__KG_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Unidades_Emater_Prod_animal_novo_1_0() {
+            return {
+                pane: 'pane_Unidades_Emater_Prod_animal_novo_1',
+                opacity: 1,
+                color: 'rgba(255,255,123,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Unidades_Emater_Prod_animal_novo_1');
+        map.getPane('pane_Unidades_Emater_Prod_animal_novo_1').style.zIndex = 401;
+        map.getPane('pane_Unidades_Emater_Prod_animal_novo_1').style['mix-blend-mode'] = 'normal';
+        var layer_Unidades_Emater_Prod_animal_novo_1 = new L.geoJson(json_Unidades_Emater_Prod_animal_novo_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Unidades_Emater_Prod_animal_novo_1',
+            layerName: 'layer_Unidades_Emater_Prod_animal_novo_1',
+            pane: 'pane_Unidades_Emater_Prod_animal_novo_1',
+            onEachFeature: pop_Unidades_Emater_Prod_animal_novo_1,
+            style: style_Unidades_Emater_Prod_animal_novo_1_0,
+        });
+        bounds_group.addLayer(layer_Unidades_Emater_Prod_animal_novo_1);
+        map.addLayer(layer_Unidades_Emater_Prod_animal_novo_1);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/Unidades_Emater_Prod_animal_novo_1.png" /> Unidades_Emater_Prod_animal_novo': layer_Unidades_Emater_Prod_animal_novo_1,"Google Satellite": layer_GoogleSatellite_0,}).addTo(map);
+        setBounds();
+        var i = 0;
+        layer_Unidades_Emater_Prod_animal_novo_1.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['UL'] !== null?String('<div style="color: #323232; font-size: 13pt; font-family: \'Open Sans\', sans-serif;">' + layer.feature.properties['UL']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Unidades_Emater_Prod_animal_novo_1'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        map.addControl(new L.Control.Search({
+            layer: layer_Unidades_Emater_Prod_animal_novo_1,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'UL'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+        resetLabels([layer_Unidades_Emater_Prod_animal_novo_1]);
+        map.on("zoomend", function(){
+            resetLabels([layer_Unidades_Emater_Prod_animal_novo_1]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_Unidades_Emater_Prod_animal_novo_1]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_Unidades_Emater_Prod_animal_novo_1]);
+        });
+        </script>
+    </body>
+</html>
